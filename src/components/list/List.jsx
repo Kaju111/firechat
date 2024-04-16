@@ -1,6 +1,6 @@
 import React from "react";
 import "./list.css";
-import Userinfo from "./userInfo/Userinfo";
+import Userinfo from "./chatList/userInfo/Userinfo";
 import ChatList from "./chatList/ChatList";
 
 const List = () => {
