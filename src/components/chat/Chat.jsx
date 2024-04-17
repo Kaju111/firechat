@@ -39,60 +39,7 @@ const Chat = () => {
           <div className="texts">
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-              temporibus qui excepturi et exercitationem repudiandae corporis
-              pariatur est aperiam, incidunt fuga. Id sunt natus, itaque impedit
-              accusantium eveniet quasi delectus autem excepturi nesciunt ipsam
-              eius. Quod hic nihil nemo sit.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-              temporibus qui excepturi et exercitationem repudiandae corporis
-              pariatur est aperiam, incidunt fuga. Id sunt natus, itaque impedit
-              accusantium eveniet quasi delectus autem excepturi nesciunt ipsam
-              eius. Quod hic nihil nemo sit.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-              temporibus qui excepturi et exercitationem repudiandae corporis
-              pariatur est aperiam, incidunt fuga. Id sunt natus, itaque impedit
-              accusantium eveniet quasi delectus autem excepturi nesciunt ipsam
-              eius. Quod hic nihil nemo sit.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-              temporibus qui excepturi et exercitationem repudiandae corporis
-              pariatur est aperiam, incidunt fuga. Id sunt natus, itaque impedit
-              accusantium eveniet quasi delectus autem excepturi nesciunt ipsam
-              eius. Quod hic nihil nemo sit.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-              temporibus qui excepturi et exercitationem repudiandae corporis
-              pariatur est aperiam, incidunt fuga. Id sunt natus, itaque impedit
-              accusantium eveniet quasi delectus autem excepturi nesciunt ipsam
-              eius. Quod hic nihil nemo sit.
+              temporibus qui excepturi
             </p>
             <span>1 min ago</span>
           </div>
@@ -105,27 +52,12 @@ const Chat = () => {
             />
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-              temporibus qui excepturi et exercitationem repudiandae corporis
-              pariatur est aperiam, incidunt fuga. Id sunt natus, itaque impedit
-              accusantium eveniet quasi delectus autem excepturi nesciunt ipsam
-              eius. Quod hic nihil nemo sit.
+              temporibus qui
             </p>
             <span>1 min ago</span>
           </div>
         </div>
-        <div className="message">
-          <img src="./avatar.png" alt="" />
-          <div className="texts">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-              temporibus qui excepturi et exercitationem repudiandae corporis
-              pariatur est aperiam, incidunt fuga. Id sunt natus, itaque impedit
-              accusantium eveniet quasi delectus autem excepturi nesciunt ipsam
-              eius. Quod hic nihil nemo sit.
-            </p>
-            <span>1 min ago</span>
-          </div>
-        </div>
+
         <div ref={endRef}></div>
       </div>
       <div className="bottom">
