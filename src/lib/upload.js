@@ -2,10 +2,6 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "./firebase";
 
 const upload = async (file) => {
-  if (!file) {
-    throw new Error("No file provided");
-  }
-
   const date = new Date();
   const storageRef = ref(storage, `images/${date + file.name}`);
 
@@ -20,7 +16,7 @@ const upload = async (file) => {
         console.log("Upload is " + progress + "% done");
       },
       (error) => {
-        reject("Something went wrong!" + error.code);
+        reject("Someting went wrong!" + error.code);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
