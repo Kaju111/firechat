@@ -8,25 +8,44 @@ import { db } from "../../../lib/firebase";
 const ChatList = () => {
   const [chats, setChats] = useState([]);
   const [addMode, setAddMode] = useState(false);
-
   const { currentUser } = useUserStore();
 
   useEffect(() => {
     const unSub = onSnapshot(
       doc(db, "userchats", currentUser.id),
       async (res) => {
-        const items = res.data().chats;
+        try {
+          if (res.exists()) {
+            const items = res.data().chats;
+            const promises = items.map(async (item) => {
+              const userDocRef = doc(db, "users", item.receiverId);
+              const userDocSnap = await getDoc(userDocRef);
 
-        const promises = items.map(async (item) => {
-          const userDocRef = doc(db, "users", item.receiverId);
-          const userDocSnap = await getDoc(userDocRef);
+              if (userDocSnap.exists()) {
+                const user = userDocSnap.data();
+                return { ...item, user };
+              } else {
+                console.log("User document does not exist.");
+                return null;
+              }
+            });
 
-          const user = userDocSnap.data();
-          return { ...item, user };
-        });
-        const chatData = await Promise.all(promises);
+            const chatData = await Promise.all(promises);
+            const filteredChats = chatData.filter((chat) => chat !== null);
+            const sortedChats = filteredChats.sort(
+              (a, b) => b.updatedAt - a.updatedAt
+            );
 
-        setChats(chatData.sort((a, b) => b.updateAt - a.updateAt));
+            setChats(sortedChats);
+          } else {
+            console.log("Document does not exist.");
+            // Clear chats if document does not exist
+            setChats([]);
+          }
+        } catch (error) {
+          console.log("Error fetching chat data:", error);
+          // Handle error fetching chat data
+        }
       }
     );
 
@@ -51,14 +70,13 @@ const ChatList = () => {
       </div>
       {chats.map((chat) => (
         <div className="item" key={chat.chatId}>
-          <img src="./avatar.png" alt="" />
+          <img src={chat.user.avatar || "./avatar.png"} alt="" />
           <div className="texts">
-            <span>Jane Doe</span>
+            <span>{chat.user.username}</span>
             <p>{chat.lastMessage}</p>
           </div>
         </div>
       ))}
-
       {addMode && <AddUser />}
     </div>
   );

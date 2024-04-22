@@ -4,38 +4,46 @@ import { db } from "../../../lib/firebase";
 import {
   arrayUnion,
   collection,
-  getDoc,
+  getDocs,
   query,
+  where,
+  doc,
+  updateDoc,
   serverTimestamp,
   setDoc,
-  updateDoc,
-  where,
 } from "firebase/firestore";
 import { useUserStore } from "../../../lib/userStore";
 
 const AddUser = () => {
   const [user, setUser] = useState(null);
-
   const { currentUser } = useUserStore();
 
   const handleSearch = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const username = formData.get("username");
+
     try {
       const userRef = collection(db, "user");
-
       const q = query(userRef, where("username", "==", username));
+      const querySnapshot = await getDocs(q);
 
-      const querySnapShot = await getDoc(q);
-
-      if (!querySnapShot.empty) {
-        setUser(querySnapShot.docs[0].data());
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+          setUser(doc.data());
+        });
+      } else {
+        setUser(null); // Clear user if not found
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleAdd = async (e) => {
+    e.preventDefault();
+    if (!user) return; // Check if user exists
+
     const chatRef = collection(db, "chats");
     const userChatsRef = collection(db, "userchats");
 
@@ -46,6 +54,7 @@ const AddUser = () => {
         createdAt: serverTimestamp(),
         messages: [],
       });
+
       await updateDoc(doc(userChatsRef, user.id), {
         chats: arrayUnion({
           chatId: newChatRef.id,
@@ -54,11 +63,12 @@ const AddUser = () => {
           updatedAt: Date.now(),
         }),
       });
-      await updateDoc(doc(userChatsRef, user.id), {
+
+      await updateDoc(doc(userChatsRef, currentUser.id), {
         chats: arrayUnion({
           chatId: newChatRef.id,
           lastMessage: "",
-          receiverId: currentUser.id,
+          receiverId: user.id,
           updatedAt: Date.now(),
         }),
       });
@@ -71,7 +81,7 @@ const AddUser = () => {
     <div className="addUser">
       <form onSubmit={handleSearch}>
         <input type="text" placeholder="Username" name="username" />
-        <button>Search</button>
+        <button type="submit">Search</button>
       </form>
       {user && (
         <div className="user">
