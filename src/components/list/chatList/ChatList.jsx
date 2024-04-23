@@ -14,45 +14,68 @@ const ChatList = () => {
     const unSub = onSnapshot(
       doc(db, "userchats", currentUser.id),
       async (res) => {
-        try {
-          if (res.exists()) {
-            const items = res.data().chats;
-            const promises = items.map(async (item) => {
-              const userDocRef = doc(db, "users", item.receiverId);
-              const userDocSnap = await getDoc(userDocRef);
+        const items = res.data().chats;
 
-              if (userDocSnap.exists()) {
-                const user = userDocSnap.data();
-                return { ...item, user };
-              } else {
-                console.log("User document does not exist.");
-                return null;
-              }
-            });
+        const promises = items.map(async (item) => {
+          const userDocRef = doc(db, "users", item.receiverId);
+          const userDocSnap = await getDoc(userDocRef);
 
-            const chatData = await Promise.all(promises);
-            const filteredChats = chatData.filter((chat) => chat !== null);
-            const sortedChats = filteredChats.sort(
-              (a, b) => b.updatedAt - a.updatedAt
-            );
+          const user = userDocSnap.data();
 
-            setChats(sortedChats);
-          } else {
-            console.log("Document does not exist.");
-            // Clear chats if document does not exist
-            setChats([]);
-          }
-        } catch (error) {
-          console.log("Error fetching chat data:", error);
-          // Handle error fetching chat data
-        }
+          return { ...item, user };
+        });
+        const chatData = await Promise.all(promises);
+        setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
       }
     );
-
     return () => {
       unSub();
     };
   }, [currentUser.id]);
+
+  // useEffect(() => {
+  //   const unSub = onSnapshot(
+  //     doc(db, "userchats", currentUser.id),
+  //     async (res) => {
+  //       try {
+  //         if (res.exists()) {
+  //           const items = res.data().chats;
+  //           const promises = items.map(async (item) => {
+  //             const userDocRef = doc(db, "users", item.receiverId);
+  //             const userDocSnap = await getDoc(userDocRef);
+
+  //             if (userDocSnap.exists()) {
+  //               const user = userDocSnap.data();
+  //               return { ...item, user };
+  //             } else {
+  //               console.log("User document does not exist.");
+  //               return null;
+  //             }
+  //           });
+
+  //           const chatData = await Promise.all(promises);
+  //           const filteredChats = chatData.filter((chat) => chat !== null);
+  //           const sortedChats = filteredChats.sort(
+  //             (a, b) => b.updatedAt - a.updatedAt
+  //           );
+
+  //           setChats(sortedChats);
+  //         } else {
+  //           console.log("Document does not exist.");
+  //           // Clear chats if document does not exist
+  //           setChats([]);
+  //         }
+  //       } catch (error) {
+  //         console.log("Error fetching chat data:", error);
+  //         // Handle error fetching chat data
+  //       }
+  //     }
+  //   );
+
+  //   return () => {
+  //     unSub();
+  //   };
+  // }, [currentUser.id]);
 
   return (
     <div className="chatList">
