@@ -33,50 +33,6 @@ const ChatList = () => {
     };
   }, [currentUser.id]);
 
-  // useEffect(() => {
-  //   const unSub = onSnapshot(
-  //     doc(db, "userchats", currentUser.id),
-  //     async (res) => {
-  //       try {
-  //         if (res.exists()) {
-  //           const items = res.data().chats;
-  //           const promises = items.map(async (item) => {
-  //             const userDocRef = doc(db, "users", item.receiverId);
-  //             const userDocSnap = await getDoc(userDocRef);
-
-  //             if (userDocSnap.exists()) {
-  //               const user = userDocSnap.data();
-  //               return { ...item, user };
-  //             } else {
-  //               console.log("User document does not exist.");
-  //               return null;
-  //             }
-  //           });
-
-  //           const chatData = await Promise.all(promises);
-  //           const filteredChats = chatData.filter((chat) => chat !== null);
-  //           const sortedChats = filteredChats.sort(
-  //             (a, b) => b.updatedAt - a.updatedAt
-  //           );
-
-  //           setChats(sortedChats);
-  //         } else {
-  //           console.log("Document does not exist.");
-  //           // Clear chats if document does not exist
-  //           setChats([]);
-  //         }
-  //       } catch (error) {
-  //         console.log("Error fetching chat data:", error);
-  //         // Handle error fetching chat data
-  //       }
-  //     }
-  //   );
-
-  //   return () => {
-  //     unSub();
-  //   };
-  // }, [currentUser.id]);
-
   return (
     <div className="chatList">
       <div className="search">
@@ -93,9 +49,14 @@ const ChatList = () => {
       </div>
       {chats.map((chat) => (
         <div className="item" key={chat.chatId}>
-          <img src={chat.user.avatar || "./avatar.png"} alt="" />
+          <img
+            src={
+              chat.user ? chat.user.avatar || "./avatar.png" : "./avatar.png"
+            }
+            alt=""
+          />
           <div className="texts">
-            <span>{chat.user.username}</span>
+            <span>{chat.user ? chat.user.username : "Unknown User"}</span>
             <p>{chat.lastMessage}</p>
           </div>
         </div>
