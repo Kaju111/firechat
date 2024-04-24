@@ -61,7 +61,7 @@ const ChatList = () => {
           </div>
         </div>
       ))}
-      {addMode && <AddUser />}
+      {addMode && <AddUser key="addUser" />}
     </div>
   );
 };
