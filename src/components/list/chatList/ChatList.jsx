@@ -47,16 +47,15 @@ const ChatList = () => {
           onClick={() => setAddMode((prev) => !prev)}
         />
       </div>
-      {chats.map((chat) => (
-        <div className="item" key={chat.chatId}>
-          <img
-            src={
-              chat.user ? chat.user.avatar || "./avatar.png" : "./avatar.png"
-            }
-            alt=""
-          />
+      {chats.map((chat, index) => (
+        <div className="item" key={index}>
+          <img src={chat.user ? chat.user.avatar : "./avatar.png"} alt="" />
           <div className="texts">
-            <span>{chat.user ? chat.user.username : "Unknown User"}</span>
+            <span>
+              {chat.user
+                ? chat.user.username || "Unknown User"
+                : "Unknown User"}
+            </span>
             <p>{chat.lastMessage}</p>
           </div>
         </div>
